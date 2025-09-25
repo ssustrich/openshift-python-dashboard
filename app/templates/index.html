@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Weather Dashboard</title>
+  <link rel="stylesheet" href="/static/main.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Weather Dashboard</h1>
+    <form id="locForm">
+      <div class="row">
+        <label>Latitude <input type="number" step="0.0001" id="lat" value="41.8781"/></label>
+        <label>Longitude <input type="number" step="0.0001" id="lon" value="-87.6298"/></label>
+        <label>Days
+          <select id="days">
+            <option value="1" selected>1</option>
+            <option value="3">3</option>
+            <option value="5">5</option>
+            <option value="7">7</option>
+          </select>
+        </label>
+        <button type="submit">Load</button>
+      </div>
+    </form>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Temperature (°C)</h2>
+        <canvas id="tempChart"></canvas>
+      </div>
+      <div class="card">
+        <h2>Wind Speed (m/s)</h2>
+        <canvas id="windChart"></canvas>
+      </div>
+      <div class="card">
+        <h2>Humidity (%)</h2>
+        <canvas id="humidityChart"></canvas>
+      </div>
+      <div class="card">
+        <h2>Precipitation (mm)</h2>
+        <canvas id="precipChart"></canvas>
+      </div>
+    </div>
+
+    <footer>
+      <small>Powered by <a href="https://open-meteo.com" target="_blank" rel="noreferrer">Open‑Meteo</a>. Built for OpenShift Sandbox.</small>
+    </footer>
+  </div>
+
+  <script src="/static/main.js"></script>
+</body>
+</html>
