@@ -12,3 +12,19 @@ button { cursor: pointer; border: 1px solid #475569; }
 h2 { margin: 0 0 10px; font-size: 16px; color: var(--fg); }
 footer { margin-top: 24px; color: var(--muted); }
 a { color: #7dd3fc; }
+/* Fixed-height chart area with horizontal scroll */
+.chartbox {
+  position: relative;
+  height: 260px;          /* <- fixed height so it won't grow */
+  overflow-x: auto;       /* <- allow horizontal scrolling */
+  overflow-y: hidden;
+  width: 100%;
+  border-radius: 12px;
+}
+
+/* Let the canvas be wider than the card if needed */
+.chartbox > canvas {
+  display: block;
+  height: 100% !important; /* fill the fixed height */
+  width: auto !important;  /* width will be set by JS for horizontal scroll */
+}

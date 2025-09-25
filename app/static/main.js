@@ -14,22 +14,34 @@ async function fetchWeather(lat, lon, days){
 
 function buildChart(canvasId, labels, data, label){
   const canvas = document.getElementById(canvasId);
-  // If a chart already exists on this canvas, destroy it first
-  const existing = Chart.getChart(canvas);   // works with Chart.js v3+
+  const box = canvas.parentElement; // .chartbox
+
+  // Destroy any existing chart on this canvas
+  const existing = Chart.getChart(canvas);
   if (existing) existing.destroy();
 
+  // Make the canvas wide enough to show many labels, enable horizontal scroll.
+  // ~12px per label is a good starting point; tweak as desired.
+  const minPerLabel = 12;
+  const desiredWidth = Math.max(box.clientWidth, labels.length * minPerLabel);
+  canvas.style.width = desiredWidth + "px";
+  canvas.style.height = "100%"; // will fill the 260px box height
+
+  // Build the chart (turn off 'responsive' since we control size manually)
   const ctx = canvas.getContext("2d");
-  charts[canvasId] = new Chart(ctx, {
+  new Chart(ctx, {
     type: "line",
-    data: { labels, datasets: [{ label, data, tension: 0.25, fill: false }]},
+    data: { labels, datasets: [{ label, data, tension: 0.25, fill: false }] },
     options: {
-      responsive: true,
+      responsive: false,
       maintainAspectRatio: false,
-      scales: { x: { ticks: { maxRotation: 0, autoSkip: true } } }
+      scales: {
+        x: { ticks: { maxRotation: 0, autoSkip: true } }
+      },
+      animation: false
     }
   });
 }
-
 async function load(){
   const lat = parseFloat(document.getElementById("lat").value);
   const lon = parseFloat(document.getElementById("lon").value);
@@ -47,6 +59,11 @@ async function load(){
 document.getElementById("locForm").addEventListener("submit", (e)=>{
   e.preventDefault();
   load().catch(err => alert(err.message));
+});
+
+window.addEventListener("resize", () => {
+  // re-run load() to rebuild charts with the current labels & container width
+  load().catch(()=>{});
 });
 
 // Initial load
