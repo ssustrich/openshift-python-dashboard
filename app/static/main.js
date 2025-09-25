@@ -1,3 +1,6 @@
+// Keep a private registry (optional, but handy)
+const charts = {};
+
 async function fetchWeather(lat, lon, days){
   const params = new URLSearchParams({
     latitude: lat, longitude: lon, forecast_days: days,
@@ -9,13 +12,21 @@ async function fetchWeather(lat, lon, days){
   return res.json();
 }
 
-function buildChart(ctxId, labels, data, label){
-  const ctx = document.getElementById(ctxId).getContext("2d");
-  if(window[ctxId]) window[ctxId].destroy();
-  window[ctxId] = new Chart(ctx, {
+function buildChart(canvasId, labels, data, label){
+  const canvas = document.getElementById(canvasId);
+  // If a chart already exists on this canvas, destroy it first
+  const existing = Chart.getChart(canvas);   // works with Chart.js v3+
+  if (existing) existing.destroy();
+
+  const ctx = canvas.getContext("2d");
+  charts[canvasId] = new Chart(ctx, {
     type: "line",
     data: { labels, datasets: [{ label, data, tension: 0.25, fill: false }]},
-    options: { responsive: true, maintainAspectRatio: false, scales: { x: { ticks: { maxRotation: 0, autoSkip: true }}}}
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: { x: { ticks: { maxRotation: 0, autoSkip: true } } }
+    }
   });
 }
 
@@ -38,5 +49,5 @@ document.getElementById("locForm").addEventListener("submit", (e)=>{
   load().catch(err => alert(err.message));
 });
 
-// initial load
+// Initial load
 load().catch(()=>{});
