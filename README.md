@@ -2,8 +2,8 @@
 
 # Weather Dashboard (FastAPI on UBI9) — OpenShift Sandbox Build
 
-# TODO   fix the disconnect with the https routing
-# TODO   Add webhooks to cause openshift to redeploy my image on a repo change
+## TODO   fix the disconnect with the https routing
+## TODO   Add webhooks to cause openshift to redeploy my image on a repo change
 
 This repo is structured to **build entirely inside the OpenShift Developer Sandbox** using the **Python 3.11 UBI9 S2I** builder image. No local Docker/Podman 
 needed.
